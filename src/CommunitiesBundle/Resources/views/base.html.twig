@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% trans %}site.name{% endtrans %}{% endblock %}</title>
+        <meta name="description" content="{% trans %}site.description{% endtrans %}">
+        <meta property="og:title" content="{% block ogtitle %}{% trans %}site.name{% endtrans %}{% endblock %}" />
+        <meta property="og:type" content="website" />
+        <meta property="og:description" content="{% block ogdescription %}{% trans %}site.description{% endtrans %}{% endblock %}" />
+        <meta property="og:url" content="{{ app.request.uri }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="/bundles/communities/css/imports.css{% if app.environment == 'dev' %}?timestamp={{ "now"|date('U') }}{% endif %}" />
+        <link rel="stylesheet" href="/bundles/communities/css/app.css{% if app.environment == 'dev' %}?timestamp={{ "now"|date('U') }}{% endif %}" />
+        {% block extraCSS %}
+        {% endblock %}
+    </head>
+    <body class="locale-{{ app.request.attributes.get('_locale') }}">
+        <div class="container-fluid">
+            <div id="header" {% block headerClass %}{% endblock %}>
+                <ul id="main-menu" class="row">
+                </ul>
+            </div>
+
+            <div class="main-container">
+                {% for flashMessage in app.session.flashbag.get('notice') %}
+                <div class="flash flash_notice">
+                    {{ flashMessage }}
+                </div>
+                {% endfor %}
+
+                {% block body %}{% endblock %}
+            </div>            
+
+            <div id="footer-wrap">
+                <div id="footer" class="row">
+                </div>
+            </div>
+        </div> <!-- .container-fluid -->
+
+        <script src="/bundles/communities/js/app.js{% if app.environment == 'dev' %}?timestamp={{ "now"|date('U') }}{% endif %}"></script>
+        {% block extraJS %}
+        {% endblock %}
+    </body>
+</html>
